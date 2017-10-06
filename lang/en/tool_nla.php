@@ -26,3 +26,6 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Native Learning Analytics';
+$string['pluginnamedesc'] = 'Native Learning Analytics configuration settings.';
+
+$string['processtask'] = 'Collect and process analytic data';

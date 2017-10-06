@@ -15,17 +15,45 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin version and other meta-data are defined here.
+ * Task to perform data analysis.
  *
  * @package     tool_nla
+ * @category    task
  * @copyright   2017 Matt Porritt <mattp@catalyst-au.net>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace tool_nla\task;
+
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'tool_nla';
-$plugin->release = '2017100701';
-$plugin->version = 2017100701;
-$plugin->requires = 2017051500;
-$plugin->maturity = MATURITY_ALPHA;
+/**
+ * Class to perform task based data analysis.
+ *
+ * @package     tool_nla
+ * @category    task
+ * @copyright   2017 Matt Porritt <mattp@catalyst-au.net>
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class process extends \core\task\scheduled_task {
+
+    /**
+     * {@inheritDoc}
+     * @see \core\task\scheduled_task::get_name()
+     */
+    public function get_name() {
+        // Shown in admin screens.
+        return get_string('processtask', 'tool_nla');
+    }
+
+    /**
+     *
+     * {@inheritDoc}
+     * @see \core\task\task_base::execute()
+     */
+    public function execute() {
+        //$analyzer = new analyze();
+        mtrace('Starting NLA processing...');
+
+    }
+}

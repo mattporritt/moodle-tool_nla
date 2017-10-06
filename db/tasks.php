@@ -15,17 +15,23 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin version and other meta-data are defined here.
+ * Task to perform sentiment analysis on forum posts.
  *
- * @package     tool_nla
+ * @package     tool_sentiment_forum
+ * @category    task
  * @copyright   2017 Matt Porritt <mattp@catalyst-au.net>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'tool_nla';
-$plugin->release = '2017100701';
-$plugin->version = 2017100701;
-$plugin->requires = 2017051500;
-$plugin->maturity = MATURITY_ALPHA;
+$tasks = array(
+        array(
+                'classname' => 'tool_nla\task\process',
+                'blocking' => 0,
+                'minute' => '5',
+                'hour' => '*',
+                'dayofweek' => '*',
+                'month' => '*'
+        )
+);
