@@ -15,47 +15,34 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Task to perform data analysis.
+ * Forum sentiment analyzer class.
  *
- * @package     tool_nla
- * @category    task
+ * @package     tool_sentiment_forum
  * @copyright   2017 Matt Porritt <mattp@catalyst-au.net>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace tool_nla\task;
+namespace tool_nla\analyze;
 
 defined('MOODLE_INTERNAL') || die();
 
-use tool_nla\analyze\analyze;
-
 /**
- * Class to perform task based data analysis.
+ * Analytic analyzer class.
  *
  * @package     tool_nla
- * @category    task
  * @copyright   2017 Matt Porritt <mattp@catalyst-au.net>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class process extends \core\task\scheduled_task {
+class analyze {
 
     /**
-     * {@inheritDoc}
-     * @see \core\task\scheduled_task::get_name()
-     */
-    public function get_name() {
-        // Shown in admin screens.
-        return get_string('processtask', 'tool_nla');
-    }
-
-    /**
+     * Constructor for analyzer.
+     * Makes relevant config available.
      *
-     * {@inheritDoc}
-     * @see \core\task\task_base::execute()
+     * @return void
      */
-    public function execute() {
-        $analyzer = new analyze();
-        mtrace('Starting NLA processing...');
-
+    public function __construct() {
+        $this->config = get_config('tool_nla');
     }
+
 }
