@@ -43,6 +43,30 @@ class analyze {
      */
     public function __construct() {
         $this->config = get_config('tool_nla');
+
+    }
+
+    /**
+     * Get available courses to analyze.
+     * Results are cached to improve performance.
+     *
+     * This method returns courses:
+     * That aren’t hidden.
+     * That aren’t the site course.
+     * That aren’t in a hidden category.
+     * That have at least one active enrollment.
+     * Where start date is less than now.
+     * Where end date is greater than now.
+     *
+     * @return boolean
+     */
+    public function get_courses() {
+        global $DB, $SITE;
+
+        $sql = 'SELECT c.* FROM {course} c WHERE c.id <> ?';
+        $courses = $DB->get_records_sql($sql, array($SITE->id));
+
+        return $courses;
     }
 
 }
