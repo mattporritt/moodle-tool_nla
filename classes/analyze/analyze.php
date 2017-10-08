@@ -59,28 +59,43 @@ class analyze {
      * Where course start date is less than now.
      * Where course end date is greater than now.
      *
+     * @param bool $ignorecache If true don't use caches courses.
      * @return boolean
      */
-    public function get_courses() {
+    public function get_courses($ignorecache=false) {
         global $DB, $SITE;
         $now = time();
+        $expiry = $now + 3600;
+        $cache = \cache::make('tool_nla', 'course');
 
-        $sql = 'SELECT DISTINCT c.id, c.shortname
-                FROM {course} c
-                LEFT JOIN {enrol} e
-                ON c.id = e.courseid
-                LEFT JOIN {user_enrolments} ue
-                ON e.id = ue.enrolid
-                LEFT JOIN {user} u
-                ON u.id = ue.userid
-                WHERE c.id <> ?
-                AND c.visible = 1
-                AND (c.startdate = 0 OR c.startdate < ?)
-                AND (c.enddate = 0 OR c.enddate > ?)
-                AND e.status = 0
-                AND ue.status = 0
-                AND u.suspended = 0';
-        $courses = $DB->get_records_sql($sql, array($SITE->id, $now, $now));
+        $coursescache = $cache->get('courses');
+
+        if (!$coursescache|| $ignorecache || $coursescache['expiry'] < $now) {
+            $sql = 'SELECT DISTINCT c.id, c.shortname
+                    FROM {course} c
+                    LEFT JOIN {enrol} e
+                    ON c.id = e.courseid
+                    LEFT JOIN {user_enrolments} ue
+                    ON e.id = ue.enrolid
+                    LEFT JOIN {user} u
+                    ON u.id = ue.userid
+                    WHERE c.id <> ?
+                    AND c.visible = 1
+                    AND (c.startdate = 0 OR c.startdate < ?)
+                    AND (c.enddate = 0 OR c.enddate > ?)
+                    AND e.status = 0
+                    AND ue.status = 0
+                    AND u.suspended = 0';
+            $courses = $DB->get_records_sql($sql, array($SITE->id, $now, $now));
+
+            $courseobj = array(
+                    'expiry' => $expiry,
+                    'courses' => $courses
+            );
+            $cache->set('courses', $courseobj);
+        } else {
+            $courses = $coursescache['courses'];
+        }
 
         return $courses;
     }

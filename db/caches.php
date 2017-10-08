@@ -15,17 +15,20 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin version and other meta-data are defined here.
+ * NLA cache definitions.
  *
  * @package     tool_nla
+ * @category    caches
  * @copyright   2017 Matt Porritt <mattp@catalyst-au.net>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'tool_nla';
-$plugin->release = '2017100703';
-$plugin->version = 2017100703;
-$plugin->requires = 2017051500;
-$plugin->maturity = MATURITY_ALPHA;
+$definitions = array(
+    'course' => array(
+        'mode' => cache_store::MODE_APPLICATION,
+        'simplekeys' => true,
+        'canuselocalstore' => true
+    ),
+);

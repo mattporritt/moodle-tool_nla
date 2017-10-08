@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Class to perform task based data analysis.
+ * Get course method unit tests
  *
  * @package     tool_nla
  * @category    phpunit

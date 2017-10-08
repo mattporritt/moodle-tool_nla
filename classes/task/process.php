@@ -56,6 +56,8 @@ class process extends \core\task\scheduled_task {
     public function execute() {
         $analyzer = new analyze();
         mtrace('Starting NLA processing...');
+        $courses = $analyzer->get_courses();
+        mtrace(print_r($courses, true));
 
     }
 }

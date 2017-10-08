@@ -28,4 +28,5 @@ defined('MOODLE_INTERNAL') || die();
 $string['pluginname'] = 'Native Learning Analytics';
 $string['pluginnamedesc'] = 'Native Learning Analytics configuration settings.';
 
+$string['cachedef_course'] = 'Stores retrieved courses use by native learning analytics.';
 $string['processtask'] = 'Collect and process analytic data';
