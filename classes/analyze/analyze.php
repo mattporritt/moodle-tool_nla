@@ -66,7 +66,7 @@ class analyze {
         global $DB, $SITE;
         $now = time();
         $expiry = $now + 3600;
-        $cache = \cache::make('tool_nla', 'course');
+        $cache = \cache::make('tool_nla', 'values');
 
         $coursescache = $cache->get('courses');
 
@@ -114,7 +114,7 @@ class analyze {
         global $DB, $SITE;
         $now = time();
         $expiry = $now + 3600;
-        $cache = \cache::make('tool_nla', 'course');
+        $cache = \cache::make('tool_nla', 'values');
 
         $userscache = $cache->get('users');
 

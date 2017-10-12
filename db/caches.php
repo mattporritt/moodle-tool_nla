@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $definitions = array(
-    'course' => array(
+    'values' => array(
         'mode' => cache_store::MODE_APPLICATION,
         'simplekeys' => true,
         'canuselocalstore' => true
