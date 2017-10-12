@@ -116,23 +116,35 @@ class analyze {
         $expiry = $now + 3600;
         $cache = \cache::make('tool_nla', 'course');
 
-        $sql = 'SELECT DISTINCT u.id
-                FROM {user} u
-                LEFT JOIN {user_enrolments} ue
-                ON u.id = ue.userid
-                LEFT JOIN {enrol} e
-                ON ue.enrolid = e.id
-                LEFT JOIN {course} c
-                ON e.courseid = c.id
-                WHERE c.id <> ?
-                AND c.visible = 1
-                AND (c.startdate = 0 OR c.startdate < ?)
-                AND (c.enddate = 0 OR c.enddate > ?)
-                AND e.status = 0
-                AND ue.status = 0
-                AND u.suspended = 0';
+        $userscache = $cache->get('users');
 
-        $users = $DB->get_records_sql($sql, array($SITE->id, $now, $now));
+        if (!$userscache|| $ignorecache || $userscache['expiry'] < $now) {
+            $sql = 'SELECT DISTINCT u.id
+                    FROM {user} u
+                    LEFT JOIN {user_enrolments} ue
+                    ON u.id = ue.userid
+                    LEFT JOIN {enrol} e
+                    ON ue.enrolid = e.id
+                    LEFT JOIN {course} c
+                    ON e.courseid = c.id
+                    WHERE c.id <> ?
+                    AND c.visible = 1
+                    AND (c.startdate = 0 OR c.startdate < ?)
+                    AND (c.enddate = 0 OR c.enddate > ?)
+                    AND e.status = 0
+                    AND ue.status = 0
+                    AND u.suspended = 0';
+
+            $users = $DB->get_records_sql($sql, array($SITE->id, $now, $now));
+
+            $userobj = array(
+                    'expiry' => $expiry,
+                    'courses' => $users
+            );
+            $cache->set('users', $userobj);
+        } else {
+            $users = $userscache['users'];
+        }
 
         return $users;
     }
