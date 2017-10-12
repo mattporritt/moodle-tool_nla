@@ -60,7 +60,7 @@ class analyze {
      * Where course end date is greater than now.
      *
      * @param bool $ignorecache If true don't use caches courses.
-     * @return boolean
+     * @return object $courses List of courses.
      */
     public function get_courses($ignorecache=false) {
         global $DB, $SITE;
@@ -99,5 +99,41 @@ class analyze {
 
         return $courses;
     }
+    /**
+     * Get available users to analyze.
+     * Results are cached to improve performance.
+     *
+     * Get users that aren’t suspended.
+     * Get users that aren’t deleted.
+     * Get users that have at least one active course enrolment.
+     *
+     * @param bool $ignorecache If true don't use caches.
+     * @return object $users List of users.
+     */
+    public function get_users($ignorecache=false) {
+        global $DB, $SITE;
+        $now = time();
+        $expiry = $now + 3600;
+        $cache = \cache::make('tool_nla', 'course');
 
+        $sql = 'SELECT DISTINCT u.id
+                FROM {user} u
+                LEFT JOIN {user_enrolments} ue
+                ON u.id = ue.userid
+                LEFT JOIN {enrol} e
+                ON ue.enrolid = e.id
+                LEFT JOIN {course} c
+                ON e.courseid = c.id
+                WHERE c.id <> ?
+                AND c.visible = 1
+                AND (c.startdate = 0 OR c.startdate < ?)
+                AND (c.enddate = 0 OR c.enddate > ?)
+                AND e.status = 0
+                AND ue.status = 0
+                AND u.suspended = 0';
+
+        $users = $DB->get_records_sql($sql, array($SITE->id, $now, $now));
+
+        return $users;
+    }
 }
