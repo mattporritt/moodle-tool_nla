@@ -119,7 +119,7 @@ class analyze {
         $userscache = $cache->get('users');
 
         if (!$userscache|| $ignorecache || $userscache['expiry'] < $now) {
-            $sql = 'SELECT DISTINCT u.id
+            $sql = 'SELECT DISTINCT u.id, u.lastlogin, u.timecreated
                     FROM {user} u
                     LEFT JOIN {user_enrolments} ue
                     ON u.id = ue.userid
