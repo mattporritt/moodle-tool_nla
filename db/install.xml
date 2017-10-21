@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="admin/tool/nla/db" VERSION="20171013" COMMENT="XMLDB file for Moodle admin/tool/nla"
+<XMLDB PATH="admin/tool/nla/db" VERSION="20171021" COMMENT="XMLDB file for Moodle admin/tool/nla"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../../lib/xmldb/xmldb.xsd"
 >
@@ -92,6 +92,8 @@
         <FIELD NAME="shortname" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Short (machine) name of the metric we are tracking"/>
         <FIELD NAME="longname" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Human readable metric name"/>
         <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Description of the metric"/>
+        <FIELD NAME="gethistory" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="1" SEQUENCE="false" COMMENT="does this metric support historical data processing"/>
+        <FIELD NAME="historyrun" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="timestamp history was last run"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
