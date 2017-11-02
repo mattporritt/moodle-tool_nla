@@ -34,23 +34,26 @@ class tool_nla_last_login_interval_testcase extends advanced_testcase {
      * Test get_users method with no enrollments.
      */
     public function test_get_users() {
-        global $DB;
-        $this->resetAfterTest(true);
-        $generator = $this->getDataGenerator();
+        // Setup the test user array.
+        $user1 = new stdClass();
+        $user1->lastlogin = 0;
+        $user2 = new stdClass();
+        $user2->lastlogin = 1509584381;
+        $users = array ($user1, $user2);
 
-        // Setup courses and users.
-        $roleids = $DB->get_records_menu('role', null, '', 'shortname, id');
-        $course1 = $generator->create_course();
-        $student1 = $generator->create_user();
-        $student2 = $generator->create_user();
-        $generator->enrol_user($student1->id, $course1->id, $roleids['student']);
+        $now = 1509584382;
 
-        $last_login_interval= new last_login_interval();
-        $data = $last_login_interval->get_data();
-        
-        mtrace(print_r($data, true));
+        $lastlogininterval= new last_login_interval($users, $now);
+        $count = 0;
 
-        // Expecting one user.
-        //$this->assertEquals(1, count($users));
+        foreach ($lastlogininterval as $value) {
+            $count++;
+        }
+        $lastlogininterval->rewind();
+        $lastlogin = $lastlogininterval->current();
+
+        // Expecting one result.
+        $this->assertEquals(1, $count);
+        $this->assertEquals(1, $lastlogin);
     }
 }
