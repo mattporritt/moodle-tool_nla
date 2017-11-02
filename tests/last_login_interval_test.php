@@ -33,7 +33,7 @@ class tool_nla_last_login_interval_testcase extends advanced_testcase {
     /**
      * Test get_users method with no enrollments.
      */
-    public function test_get_users() {
+    public function test_last_login_interval() {
         // Setup the test user array.
         $user1 = new stdClass();
         $user1->lastlogin = 0;

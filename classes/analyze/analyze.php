@@ -148,4 +148,91 @@ class analyze {
 
         return $users;
     }
+
+    /**
+     * 
+     * @param iterator $metric Metric values to calculate
+     */
+    public function get_stats($metric) {
+        $minimum = 0;
+        $maximum = 0;
+        $mean = 0;
+        $median = 0;
+        $lowerquartile = 0;
+        $upperquartile = 0;
+        $interquartilerange = 0;
+        $count = 0;
+        $total = 0;
+
+        $frequency = array();
+        foreach ($metric as $value) {
+            if (array_key_exists($value, $frequency)) {
+                $frequency[$value] = $frequency[$value] + 1;
+            } else {
+                $frequency[$value] = 1;
+            }
+            $count++;
+            $total += $value;
+        }
+        ksort($frequency);
+
+        // Calculate minimum value.
+        $minimum = key($frequency);
+
+        // Calculate maximum value.
+        end($frequency);
+        $maximum = key($frequency);
+        reset($frequency);
+
+        // Calculate mean value.
+        $mean = round(($total / $count), 3);
+
+        // Calculate median value.
+        $value1 = 0;
+        $value2 = 0;
+        if ($count% 2 == 0) {
+            // Total is even so need two values.
+            $value1 = $count/ 2;
+            $value2 = ($count/ 2) + 1;
+        } else {
+            // Total is odd so only one value.
+            $value1 = ($count+ 1) / 2;
+
+        }
+
+        $ncount = 0;
+        $median1 = 0;
+        $median2 = 0;
+        foreach ($frequency as $key => $value) {
+            $ncount += $value;
+
+            // Set median1.
+            if ($ncount >= $value1) {
+                $median1 = $key;
+            }
+
+            // Set median2.
+            if ($ncount >= $value2) {
+                $median2 = $key;
+            }
+
+            // Exit if we have what we need.
+            if ($median1 != 0 && $value2 == 0) {
+                $median = $median1;
+                break;
+            } elseif ($median1 != 0 && $median2 != 0) {
+                $median = ($median1 + $median2) / 2;
+                break;
+            }
+        }
+
+        $results = array(
+                $minimum,
+                $maximum,
+                $mean,
+                $median
+        );
+
+        return $results;
+    }
 }
