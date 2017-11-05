@@ -150,7 +150,7 @@ class analyze {
     }
 
     /**
-     * 
+     *
      * @param iterator $metric Metric values to calculate
      */
     public function get_stats($metric) {
@@ -190,13 +190,13 @@ class analyze {
         // Calculate median value.
         $value1 = 0;
         $value2 = 0;
-        if ($count% 2 == 0) {
+        if ($count % 2 == 0) {
             // Total is even so need two values.
-            $value1 = $count/ 2;
-            $value2 = ($count/ 2) + 1;
+            $value1 = $count / 2;
+            $value2 = ($count / 2) + 1;
         } else {
             // Total is odd so only one value.
-            $value1 = ($count+ 1) / 2;
+            $value1 = ($count + 1) / 2;
 
         }
 
@@ -220,7 +220,7 @@ class analyze {
             if ($median1 != 0 && $value2 == 0) {
                 $median = $median1;
                 break;
-            } elseif ($median1 != 0 && $median2 != 0) {
+            } else if ($median1 != 0 && $median2 != 0) {
                 $median = ($median1 + $median2) / 2;
                 break;
             }

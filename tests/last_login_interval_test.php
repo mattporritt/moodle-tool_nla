@@ -43,7 +43,7 @@ class tool_nla_last_login_interval_testcase extends advanced_testcase {
 
         $now = 1509584382;
 
-        $lastlogininterval= new last_login_interval($users, $now);
+        $lastlogininterval = new last_login_interval($users, $now);
         $count = 0;
 
         foreach ($lastlogininterval as $value) {

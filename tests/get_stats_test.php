@@ -33,7 +33,7 @@ class tool_nla_get_stats_testcase extends advanced_testcase {
      * Test get_stats method.
      */
     public function test_get_stats_min() {
-        $metric = [7,8,9,1,2,2,3,3,3,4,5,6];
+        $metric = [7, 8, 9, 1, 2, 2, 3, 3, 3, 4, 5, 6];
         $analyzer = new analyze();
         list(
                 $minimum,
@@ -49,7 +49,7 @@ class tool_nla_get_stats_testcase extends advanced_testcase {
      * Test get_stats method.
      */
     public function test_get_stats_max() {
-        $metric = [7,8,9,1,2,2,3,3,3,4,5,6];
+        $metric = [7, 8, 9, 1, 2, 2, 3, 3, 3, 4, 5, 6];
         $analyzer = new analyze();
         list(
                 $minimum,
@@ -65,7 +65,7 @@ class tool_nla_get_stats_testcase extends advanced_testcase {
      * Test get_stats method.
      */
     public function test_get_stats_mean() {
-        $metric = [7,8,9,1,2,2,3,3,3,4,5,6];
+        $metric = [7, 8, 9, 1, 2, 2, 3, 3, 3, 4, 5, 6];
         $analyzer = new analyze();
         list(
                 $minimum,
@@ -81,7 +81,7 @@ class tool_nla_get_stats_testcase extends advanced_testcase {
      * Test get_stats method.
      */
     public function test_get_stats_median_odd() {
-        $metric = [4,3,1,2,5];
+        $metric = [4, 3, 1, 2, 5];
         $analyzer = new analyze();
         list(
                 $minimum,
@@ -97,7 +97,7 @@ class tool_nla_get_stats_testcase extends advanced_testcase {
      * Test get_stats method.
      */
     public function test_get_stats_median_even() {
-        $metric = [4,3,1,2,5,3];
+        $metric = [4, 3, 1, 2, 5, 3];
         $analyzer = new analyze();
         list(
                 $minimum,

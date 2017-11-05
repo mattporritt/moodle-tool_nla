@@ -24,7 +24,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$courses = get_courses(); // TODO: just get ID
+$courses = get_courses(); // TODO: just get ID.
 
 foreach ($courses as $course) {
     $coursecontext = context_course::instance($course->id);
