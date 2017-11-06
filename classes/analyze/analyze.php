@@ -174,7 +174,7 @@ class analyze {
             $count++;
             $total += $value;
         }
-        ksort($frequency);
+        ksort($frequency);  // Sort array by keys.
 
         // Calculate minimum value.
         $minimum = key($frequency);
@@ -187,41 +187,95 @@ class analyze {
         // Calculate mean value.
         $mean = round(($total / $count), 3);
 
-        // Calculate median value.
-        $value1 = 0;
-        $value2 = 0;
-        if ($count % 2 == 0) {
-            // Total is even so need two values.
-            $value1 = $count / 2;
-            $value2 = ($count / 2) + 1;
-        } else {
-            // Total is odd so only one value.
-            $value1 = ($count + 1) / 2;
+        // Get median index values.
+        $medianindex1 = ($count + 1) / 2;
+        $medianindex2 = 0;
+        if (!is_int($medianindex1)) {
+            // Need two values.
+            $medianindex2= round($medianindex1, PHP_ROUND_HALF_UP);
+            $medianindex1= round($medianindex1, PHP_ROUND_HALF_DOWN);
+        }
 
+        // Get lower quartile index values.
+        $lowerqindex1 = ($count + 1) * 0.25;
+        $lowerqindex2 = 0;
+        if (!is_int($lowerqindex1)) {
+            // Need two values.
+            $lowerqindex2 = round($lowerqindex1, PHP_ROUND_HALF_UP);
+            $lowerqindex1 = round($lowerqindex1, PHP_ROUND_HALF_DOWN);
+        }
+
+        // Get upper quartile index values.
+        $upperqindex1 = ($count + 1) * 0.75;
+        $upperqindex2 = 0;
+        if (!is_int($upperqindex1)) {
+            // Need two values.
+            $upperqindex2 = round($upperqindex1, PHP_ROUND_HALF_UP);
+            $upperqindex1 = round($upperqindex1, PHP_ROUND_HALF_DOWN);
         }
 
         $ncount = 0;
         $median1 = 0;
         $median2 = 0;
+        $lowerq1 = 0;
+        $lowerq2 = 0;
+        $upperq1 = 0;
+        $upperq2 = 0;
+
         foreach ($frequency as $key => $value) {
             $ncount += $value;
 
+            // Set lowerq1
+            if ($ncount >= $lowerqindex1) {
+                $lowerq1 = $key;
+            }
+
+            // Set lowerq2.
+            if ($ncount >= $lowerqindex2) {
+                $lowerq2 = $key;
+            }
+
             // Set median1.
-            if ($ncount >= $value1) {
+            if ($ncount >= $medianindex1) {
                 $median1 = $key;
             }
 
             // Set median2.
-            if ($ncount >= $value2) {
+            if ($ncount >= $medianindex2) {
                 $median2 = $key;
             }
 
-            // Exit if we have what we need.
-            if ($median1 != 0 && $value2 == 0) {
+            // Set upperq1
+            if ($ncount >= $upperqindex1) {
+                $upperq1 = $key;
+            }
+
+            // Set upperq2.
+            if ($ncount >= $upperqindex2) {
+                $upperq2 = $key;
+            }
+
+            if ($lowerq1 != 0 && $lowerqindex2 == 0) {
+                $lowerq = $lowerq1;
+            } else if ($lowerq1 != 0 && $lowerq2 != 0) {
+                $lowerq = ($lowerq1 + $lowerq2) / 2;
+            }
+
+            if (($median1 != 0 && $medianindex2 == 0) && $median == 0) {
                 $median = $median1;
-                break;
-            } else if ($median1 != 0 && $median2 != 0) {
+            } else if (($median1 != 0 && $median2 != 0) && $median == 0) {
                 $median = ($median1 + $median2) / 2;
+            }
+
+            // Exit if we have what we need.
+            // We make the assumption that if we have the
+            // upper quartile we also have the lower quartile
+            // and the median.
+            if ($upperq1 != 0 && $upperqindex2 == 0) {
+                $upperq = $upperq1;
+                break;
+            } else if ($upperq1 != 0 && $upperq2 != 0) {
+                $upperq = ($upperq1 + $upperq2) / 2;
                 break;
             }
         }
