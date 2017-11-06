@@ -158,8 +158,8 @@ class analyze {
         $maximum = 0;
         $mean = 0;
         $median = 0;
-        $lowerquartile = 0;
-        $upperquartile = 0;
+        $lowerq = 0;
+        $upperq = 0;
         $interquartilerange = 0;
         $count = 0;
         $total = 0;
@@ -255,9 +255,9 @@ class analyze {
                 $upperq2 = $key;
             }
 
-            if ($lowerq1 != 0 && $lowerqindex2 == 0) {
+            if (($lowerq1 != 0 && $lowerqindex2 == 0) && $lowerq == 0) {
                 $lowerq = $lowerq1;
-            } else if ($lowerq1 != 0 && $lowerq2 != 0) {
+            } else if (($lowerq1 != 0 && $lowerq2 != 0) && $lowerq == 0) {
                 $lowerq = ($lowerq1 + $lowerq2) / 2;
             }
 
