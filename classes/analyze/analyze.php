@@ -149,6 +149,19 @@ class analyze {
         return $users;
     }
 
+    private function calculate_index($count, $multiplier) {
+        $value1 = ($count + 1) * $multiplier;
+        $value2 = 0;
+
+        if (!is_int($value1)) {
+            // Need two values.
+            $value2 = round($value1, 0, PHP_ROUND_HALF_UP);
+            $value1 = round($value1, 0, PHP_ROUND_HALF_DOWN);
+        }
+
+        return array($value1, $value2);
+    }
+
     /**
      *
      * @param iterator $metric Metric values to calculate
@@ -188,31 +201,13 @@ class analyze {
         $mean = round(($total / $count), 3);
 
         // Get median index values.
-        $medianindex1 = ($count + 1) / 2;
-        $medianindex2 = 0;
-        if (!is_int($medianindex1)) {
-            // Need two values.
-            $medianindex2= round($medianindex1, 0, PHP_ROUND_HALF_UP);
-            $medianindex1= round($medianindex1, 0, PHP_ROUND_HALF_DOWN);
-        }
+        list($medianindex1, $medianindex2) = $this->calculate_index($count, 0.5);
 
         // Get lower quartile index values.
-        $lowerqindex1 = ($count + 1) * 0.25;
-        $lowerqindex2 = 0;
-        if (!is_int($lowerqindex1)) {
-            // Need two values.
-            $lowerqindex2 = round($lowerqindex1, 0, PHP_ROUND_HALF_UP);
-            $lowerqindex1 = round($lowerqindex1, 0, PHP_ROUND_HALF_DOWN);
-        }
+        list($lowerqindex1, $lowerqindex2) = $this->calculate_index($count, 0.25);
 
         // Get upper quartile index values.
-        $upperqindex1 = ($count + 1) * 0.75;
-        $upperqindex2 = 0;
-        if (!is_int($upperqindex1)) {
-            // Need two values.
-            $upperqindex2 = round($upperqindex1, 0, PHP_ROUND_HALF_UP);
-            $upperqindex1 = round($upperqindex1, 0, PHP_ROUND_HALF_DOWN);
-        }
+        list($upperqindex1, $upperqindex2) = $this->calculate_index($count, 0.75);
 
         $ncount = 0;
         $median1 = 0;
