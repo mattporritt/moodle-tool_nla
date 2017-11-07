@@ -149,7 +149,13 @@ class analyze {
         return $users;
     }
 
-    private function calculate_index($count, $multiplier) {
+    /**
+     * 
+     * @param unknown $count
+     * @param unknown $multiplier
+     * @return number[]
+     */
+    private function calculate_index(&$count, $multiplier) {
         $value1 = ($count + 1) * $multiplier;
         $value2 = 0;
 
@@ -160,6 +166,98 @@ class analyze {
         }
 
         return array($value1, $value2);
+    }
+
+    private function calculate_stats(&$frequency, $medianarray, $lowerqarray, $upperarray) {
+        
+        // Get median index values.
+        list($medianindex1, $medianindex2) = $medianarray;
+        
+        // Get lower quartile index values.
+        list($lowerqindex1, $lowerqindex2) = $lowerqarray;
+        
+        // Get upper quartile index values.
+        list($upperqindex1, $upperqindex2) = $upperarray;
+        $ncount = 0;
+        $median1 = 0;
+        $median2 = 0;
+        $lowerq1 = 0;
+        $lowerq2 = 0;
+        $upperq1 = 0;
+        $upperq2 = 0;
+        
+        foreach ($frequency as $key => $value) {
+            $ncount += $value;
+            
+            // Set lowerq1
+            if (($ncount >= $lowerqindex1) && $lowerq1 == 0) {
+                $lowerq1 = $key;
+            }
+            
+            // Set lowerq2.
+            if (($ncount >= $lowerqindex2) && $lowerq2 == 0) {
+                $lowerq2 = $key;
+            }
+            
+            // Set median1.
+            if (($ncount >= $medianindex1) && $median1 == 0) {
+                $median1 = $key;
+            }
+            
+            // Set median2.
+            if (($ncount >= $medianindex2) && $median2 == 0) {
+                $median2 = $key;
+            }
+            
+            // Set upperq1
+            if (($ncount >= $upperqindex1) && $upperq1 == 0) {
+                $upperq1 = $key;
+            }
+            
+            // Set upperq2.
+            if (($ncount >= $upperqindex2) && $upperq2 == 0) {
+                $upperq2 = $key;
+            }
+            
+            if (($lowerq1 != 0 && $lowerqindex2 == 0) && $lowerq == 0) {
+                $lowerq = $lowerq1;
+            } else if (($lowerq1 != 0 && $lowerq2 != 0) && $lowerq == 0) {
+                $lowerq = ($lowerq1 + $lowerq2) / 2;
+                
+            }
+            
+            if (($median1 != 0 && $medianindex2 == 0) && $median == 0) {
+                $median = $median1;
+            } else if (($median1 != 0 && $median2 != 0) && $median == 0) {
+                $median = ($median1 + $median2) / 2;
+            }
+            
+            // Exit if we have what we need.
+            // We make the assumption that if we have the
+            // upper quartile we also have the lower quartile
+            // and the median.
+            if (($upperq1 != 0 && $upperqindex2 == 0) && $upperq == 0) {
+                $upperq = $upperq1;
+                break;
+            } else if (($upperq1 != 0 && $upperq2 != 0) && $upperq == 0) {
+                $upperq = ($upperq1 + $upperq2) / 2;
+                break;
+            }
+        }
+        
+        $interquartilerange = $upperq - $lowerq;
+        
+        $results = array(
+                $minimum,
+                $maximum,
+                $mean,
+                $median,
+                $lowerq,
+                $upperq,
+                $interquartilerange
+        );
+        
+        return $results;
     }
 
     /**
