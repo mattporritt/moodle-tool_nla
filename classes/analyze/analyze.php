@@ -281,13 +281,16 @@ class analyze {
             }
         }
 
+        $interquartilerange = $upperq - $lowerq;
+
         $results = array(
                 $minimum,
                 $maximum,
                 $mean,
                 $median,
                 $lowerq,
-                $upperq
+                $upperq,
+                $interquartilerange
         );
 
         return $results;

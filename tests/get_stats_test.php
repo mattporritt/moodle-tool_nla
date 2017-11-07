@@ -41,7 +41,8 @@ class tool_nla_get_stats_testcase extends advanced_testcase {
                 $mean,
                 $median,
                 $lowerq,
-                $upperq
+                $upperq,
+                $interquartilerange
              ) = $analyzer->get_stats($metric);
 
              $this->assertEquals(1, $minimum);
@@ -59,7 +60,8 @@ class tool_nla_get_stats_testcase extends advanced_testcase {
                 $mean,
                 $median,
                 $lowerq,
-                $upperq
+                $upperq,
+                $interquartilerange
                 ) = $analyzer->get_stats($metric);
 
                 $this->assertEquals(9, $maximum);
@@ -77,7 +79,8 @@ class tool_nla_get_stats_testcase extends advanced_testcase {
                 $mean,
                 $median,
                 $lowerq,
-                $upperq
+                $upperq,
+                $interquartilerange
                 ) = $analyzer->get_stats($metric);
 
                 $this->assertEquals(4.417, $mean);
@@ -95,7 +98,8 @@ class tool_nla_get_stats_testcase extends advanced_testcase {
                 $mean,
                 $median,
                 $lowerq,
-                $upperq
+                $upperq,
+                $interquartilerange
                 ) = $analyzer->get_stats($metric);
 
                 $this->assertEquals(3, $median);
@@ -113,7 +117,8 @@ class tool_nla_get_stats_testcase extends advanced_testcase {
                 $mean,
                 $median,
                 $lowerq,
-                $upperq
+                $upperq,
+                $interquartilerange
                 ) = $analyzer->get_stats($metric);
 
                 $this->assertEquals(3, $median);
@@ -131,7 +136,8 @@ class tool_nla_get_stats_testcase extends advanced_testcase {
                 $mean,
                 $median,
                 $lowerq,
-                $upperq
+                $upperq,
+                $interquartilerange
                 ) = $analyzer->get_stats($metric);
 
                 $this->assertEquals(20, $lowerq);
@@ -149,7 +155,8 @@ class tool_nla_get_stats_testcase extends advanced_testcase {
                 $mean,
                 $median,
                 $lowerq,
-                $upperq
+                $upperq,
+                $interquartilerange
                 ) = $analyzer->get_stats($metric);
 
                 $this->assertEquals(4, $lowerq);
@@ -167,7 +174,8 @@ class tool_nla_get_stats_testcase extends advanced_testcase {
                 $mean,
                 $median,
                 $lowerq,
-                $upperq
+                $upperq,
+                $interquartilerange
                 ) = $analyzer->get_stats($metric);
 
                 $this->assertEquals(25.5, $upperq);
@@ -185,9 +193,48 @@ class tool_nla_get_stats_testcase extends advanced_testcase {
                 $mean,
                 $median,
                 $lowerq,
-                $upperq
+                $upperq,
+                $interquartilerange
                 ) = $analyzer->get_stats($metric);
 
                 $this->assertEquals(11, $upperq);
+    }
+
+    /**
+     * Test get_stats method.
+     */
+    public function test_get_stats_interq_even() {
+        $metric = [18, 20, 23, 20, 23, 27, 24, 23, 29];
+        $analyzer = new analyze();
+        list(
+                $minimum,
+                $maximum,
+                $mean,
+                $median,
+                $lowerq,
+                $upperq,
+                $interquartilerange
+                ) = $analyzer->get_stats($metric);
+
+                $this->assertEquals(5.5, $interquartilerange);
+    }
+
+    /**
+     * Test get_stats method.
+     */
+    public function test_get_stats_interq_odd() {
+        $metric = [11, 4, 6, 8, 3, 10, 8, 10, 4, 12, 31];
+        $analyzer = new analyze();
+        list(
+                $minimum,
+                $maximum,
+                $mean,
+                $median,
+                $lowerq,
+                $upperq,
+                $interquartilerange
+                ) = $analyzer->get_stats($metric);
+
+                $this->assertEquals(7, $interquartilerange);
     }
 }
