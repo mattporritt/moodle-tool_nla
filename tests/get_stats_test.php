@@ -39,7 +39,9 @@ class tool_nla_get_stats_testcase extends advanced_testcase {
                 $minimum,
                 $maximum,
                 $mean,
-                $median
+                $median,
+                $lowerq,
+                $upperq
              ) = $analyzer->get_stats($metric);
 
              $this->assertEquals(1, $minimum);
@@ -55,7 +57,9 @@ class tool_nla_get_stats_testcase extends advanced_testcase {
                 $minimum,
                 $maximum,
                 $mean,
-                $median
+                $median,
+                $lowerq,
+                $upperq
                 ) = $analyzer->get_stats($metric);
 
                 $this->assertEquals(9, $maximum);
@@ -71,7 +75,9 @@ class tool_nla_get_stats_testcase extends advanced_testcase {
                 $minimum,
                 $maximum,
                 $mean,
-                $median
+                $median,
+                $lowerq,
+                $upperq
                 ) = $analyzer->get_stats($metric);
 
                 $this->assertEquals(4.417, $mean);
@@ -87,7 +93,9 @@ class tool_nla_get_stats_testcase extends advanced_testcase {
                 $minimum,
                 $maximum,
                 $mean,
-                $median
+                $median,
+                $lowerq,
+                $upperq
                 ) = $analyzer->get_stats($metric);
 
                 $this->assertEquals(3, $median);
@@ -103,9 +111,83 @@ class tool_nla_get_stats_testcase extends advanced_testcase {
                 $minimum,
                 $maximum,
                 $mean,
-                $median
+                $median,
+                $lowerq,
+                $upperq
                 ) = $analyzer->get_stats($metric);
 
                 $this->assertEquals(3, $median);
+    }
+
+    /**
+     * Test get_stats method.
+     */
+    public function test_get_stats_lowerq_even() {
+        $metric = [18, 20, 23, 20, 23, 27, 24, 23, 29];
+        $analyzer = new analyze();
+        list(
+                $minimum,
+                $maximum,
+                $mean,
+                $median,
+                $lowerq,
+                $upperq
+                ) = $analyzer->get_stats($metric);
+
+                $this->assertEquals(20, $lowerq);
+    }
+
+    /**
+     * Test get_stats method.
+     */
+    public function test_get_stats_lowerq_odd() {
+        $metric = [11, 4, 6, 8, 3, 10, 8, 10, 4, 12, 31];
+        $analyzer = new analyze();
+        list(
+                $minimum,
+                $maximum,
+                $mean,
+                $median,
+                $lowerq,
+                $upperq
+                ) = $analyzer->get_stats($metric);
+
+                $this->assertEquals(4, $lowerq);
+    }
+
+    /**
+     * Test get_stats method.
+     */
+    public function test_get_stats_upperq_even() {
+        $metric = [18, 20, 23, 20, 23, 27, 24, 23, 29];
+        $analyzer = new analyze();
+        list(
+                $minimum,
+                $maximum,
+                $mean,
+                $median,
+                $lowerq,
+                $upperq
+                ) = $analyzer->get_stats($metric);
+
+                $this->assertEquals(25.5, $upperq);
+    }
+
+    /**
+     * Test get_stats method.
+     */
+    public function test_get_stats_upperq_odd() {
+        $metric = [11, 4, 6, 8, 3, 10, 8, 10, 4, 12, 31];
+        $analyzer = new analyze();
+        list(
+                $minimum,
+                $maximum,
+                $mean,
+                $median,
+                $lowerq,
+                $upperq
+                ) = $analyzer->get_stats($metric);
+
+                $this->assertEquals(11, $upperq);
     }
 }
