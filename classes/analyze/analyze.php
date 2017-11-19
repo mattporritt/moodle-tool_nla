@@ -337,7 +337,7 @@ class analyze {
             // Get metric iterator based on metric shortname.
             // Get stats for metric.
             // Save stats to database.
-       if ($metric->)
+
 
         // If we are calculating history for metric.
             // Find out where we are up to in history processing.
