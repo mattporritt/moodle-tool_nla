@@ -43,14 +43,20 @@ class analyze {
      */
     public function __construct() {
         $this->config = get_config('tool_nla');
-
+        $this->metrics = $this->get_metrics();
     }
-    
-    
+
+    /**
+     * Get the enabled metrics and their settings from the database.
+     *
+     * @return array $metrics Array of metrics
+     */
     public function get_metrics() {
         global $DB;
-        
-        
+
+        $metrics = $DB->get_records('tool_nla_metrics', array('enabled' => 1), 'shortname ASC');
+
+        return $metrics;
     }
 
     /**

@@ -15,32 +15,29 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Install code for NLA.
+ * General metric unit tests.
  *
  * @package     tool_nla
+ * @category    phpunit
  * @copyright   2017 Matt Porritt <mattp@catalyst-au.net>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die;
+defined('MOODLE_INTERNAL') || die();
 
+use tool_nla\analyze\analyze;
 
-/**
- * Perform the post-install procedures.
- * This adds the metrics to the database
- */
-function xmldb_tool_nla_install() {
-    global $DB;
+class tool_nla_metrics_testcase extends advanced_testcase {
 
-    $metric1 = new stdClass();
-    $metric1->shortname = 'last_login_interval';
-    $metric1->longname = 'Last Login Interval';
-    $metric1->description = 'Time since the user last logged into the system';
-    $metric1->gethistory = 0;
-    $metric1->enabled = 1;
+    /**
+     * Test get_users method with no enrollments.
+     */
+    public function test_last_login_interval() {
+        $analyzer = new analyze();
+        $metrics = $analyzer->get_metrics();
 
-    $metrics = array($metric1);
+        $this->assertEquals(1, count($metrics));
+        $this->assertEquals('last_login_interval', $metrics[1]->shortname);
 
-    $DB->insert_records('tool_nla_metrics', $metrics);
-
+    }
 }
