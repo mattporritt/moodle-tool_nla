@@ -35,6 +35,8 @@ defined('MOODLE_INTERNAL') || die();
  */
 class analyze {
 
+    private $interval = 60 * 60 * 24 * 7; // One week.
+
     /**
      * Constructor for analyzer.
      * Makes relevant config available.
@@ -320,4 +322,39 @@ class analyze {
 
         return $results;
     }
+
+    /**
+     *
+     * @param unknown $metric
+     * @param number $interval
+     */
+    public function process_metric($metric, $interval=0) {
+        if ($interval == 0) {
+            $interval = $this->interval;
+        }
+
+        // If it is time to process metric.
+            // Get metric iterator based on metric shortname.
+            // Get stats for metric.
+            // Save stats to database.
+       if ($metric->)
+
+        // If we are calculating history for metric.
+            // Find out where we are up to in history processing.
+            // Create an adhoc task to process next lot of history (if required).
+            // ?
+            // Profit?
+    }
+
+    /**
+     *
+     */
+    public function process_metrics() {
+
+        foreach ($metrics as $metric) {
+            $this->process_metric($metric);
+        }
+
+    }
+
 }
