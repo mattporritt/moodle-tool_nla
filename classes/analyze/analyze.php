@@ -45,6 +45,13 @@ class analyze {
         $this->config = get_config('tool_nla');
 
     }
+    
+    
+    public function get_metrics() {
+        global $DB;
+        
+        
+    }
 
     /**
      * Get available courses to analyze.
