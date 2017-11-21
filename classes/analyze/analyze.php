@@ -78,30 +78,15 @@ class analyze {
      * @return object $courses List of courses.
      */
     public function get_courses($ignorecache=false) {
-        global $DB, $SITE;
+ 
         $now = time();
         $expiry = $now + 3600;
-        $cache = \cache::make('tool_nla', 'values');
+        $cache = \cache::make('tool_nla', 'courses');
 
         $coursescache = $cache->get('courses');
 
         if (!$coursescache|| $ignorecache || $coursescache['expiry'] < $now) {
-            $sql = 'SELECT DISTINCT c.id, c.shortname
-                    FROM {course} c
-                    LEFT JOIN {enrol} e
-                    ON c.id = e.courseid
-                    LEFT JOIN {user_enrolments} ue
-                    ON e.id = ue.enrolid
-                    LEFT JOIN {user} u
-                    ON u.id = ue.userid
-                    WHERE c.id <> ?
-                    AND c.visible = 1
-                    AND (c.startdate = 0 OR c.startdate < ?)
-                    AND (c.enddate = 0 OR c.enddate > ?)
-                    AND e.status = 0
-                    AND ue.status = 0
-                    AND u.suspended = 0';
-            $courses = $DB->get_records_sql($sql, array($SITE->id, $now, $now));
+            $courses = get_courses('all', 'c.id ASC', 'c.id');
 
             $courseobj = array(
                     'expiry' => $expiry,
@@ -125,38 +110,24 @@ class analyze {
      * @param bool $ignorecache If true don't use caches.
      * @return object $users List of users.
      */
-    public function get_users($ignorecache=false) {
+    public function get_users($courseid, $ignorecache=false) {
         global $DB, $SITE;
         $now = time();
         $expiry = $now + 3600;
-        $cache = \cache::make('tool_nla', 'values');
+        $cache = \cache::make('tool_nla', 'users');
 
-        $userscache = $cache->get('users');
+        $userscache = $cache->get($courseid);
 
         if (!$userscache|| $ignorecache || $userscache['expiry'] < $now) {
-            $sql = 'SELECT DISTINCT u.id, u.lastlogin, u.timecreated
-                    FROM {user} u
-                    LEFT JOIN {user_enrolments} ue
-                    ON u.id = ue.userid
-                    LEFT JOIN {enrol} e
-                    ON ue.enrolid = e.id
-                    LEFT JOIN {course} c
-                    ON e.courseid = c.id
-                    WHERE c.id <> ?
-                    AND c.visible = 1
-                    AND (c.startdate = 0 OR c.startdate < ?)
-                    AND (c.enddate = 0 OR c.enddate > ?)
-                    AND e.status = 0
-                    AND ue.status = 0
-                    AND u.suspended = 0';
 
-            $users = $DB->get_records_sql($sql, array($SITE->id, $now, $now));
+            $coursecontext = context_course::instance($courseid);
+            $users = get_enrolled_users($coursecontext, '', 0, 'u.lastlogin', null, 0, 0, true);
 
             $userobj = array(
                     'expiry' => $expiry,
                     'courses' => $users
             );
-            $cache->set('users', $userobj);
+            $cache->set($courseid, $userobj);
         } else {
             $users = $userscache['users'];
         }
@@ -332,6 +303,7 @@ class analyze {
         if ($interval == 0) {
             $interval = $this->interval;
         }
+        $courses = $this->get_courses();
 
         // If it is time to process metric.
             // Get metric iterator based on metric shortname.

@@ -38,6 +38,7 @@ function xmldb_tool_nla_install() {
     $metric1->description = 'Time since the user last logged into the system';
     $metric1->gethistory = 0;
     $metric1->enabled = 1;
+    $metric1->lastrun = 0;
 
     $metrics = array($metric1);
 

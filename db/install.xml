@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="admin/tool/nla/db" VERSION="20171119" COMMENT="XMLDB file for Moodle admin/tool/nla"
+<XMLDB PATH="admin/tool/nla/db" VERSION="20171121" COMMENT="XMLDB file for Moodle admin/tool/nla"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../../lib/xmldb/xmldb.xsd"
 >
@@ -7,7 +7,7 @@
     <TABLE NAME="tool_nla_site" COMMENT="Stores aggregated calculated statistics for the entire site">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="metricid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The id of the metric associated with this data."/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The id of the course associated with this data."/>
         <FIELD NAME="maximum" TYPE="number" LENGTH="10" NOTNULL="true" SEQUENCE="false" DECIMALS="4" COMMENT="The maximum value found"/>
         <FIELD NAME="minimum" TYPE="number" LENGTH="10" NOTNULL="true" SEQUENCE="false" DECIMALS="4" COMMENT="The minimum calcutated"/>
         <FIELD NAME="mean" TYPE="number" LENGTH="10" NOTNULL="true" SEQUENCE="false" DECIMALS="4" COMMENT="The calculated mean value"/>
@@ -15,46 +15,7 @@
         <FIELD NAME="lowerquartile" TYPE="number" LENGTH="10" NOTNULL="true" SEQUENCE="false" DECIMALS="4" COMMENT="The calculated lower quartile"/>
         <FIELD NAME="upperquartile" TYPE="number" LENGTH="10" NOTNULL="true" SEQUENCE="false" DECIMALS="4" COMMENT="The calculated upper quartile"/>
         <FIELD NAME="interquartile" TYPE="number" LENGTH="10" NOTNULL="true" SEQUENCE="false" DECIMALS="4" COMMENT="The calculated inter quartile range"/>
-        <FIELD NAME="lastrun" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The timestamp the value was last calculated"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-      <INDEXES>
-        <INDEX NAME="metricid" UNIQUE="false" FIELDS="metricid"/>
-      </INDEXES>
-    </TABLE>
-    <TABLE NAME="tool_nla_user" COMMENT="Stores aggregated calculated statistics for individual users">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="metricid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The id of the metric associated with this data."/>
-        <FIELD NAME="maximum" TYPE="number" LENGTH="10" NOTNULL="true" SEQUENCE="false" DECIMALS="4" COMMENT="The maximum value found"/>
-        <FIELD NAME="minimum" TYPE="number" LENGTH="10" NOTNULL="true" SEQUENCE="false" DECIMALS="4" COMMENT="The minimum calcutated"/>
-        <FIELD NAME="mean" TYPE="number" LENGTH="10" NOTNULL="true" SEQUENCE="false" DECIMALS="4" COMMENT="The calculated mean value"/>
-        <FIELD NAME="median" TYPE="number" LENGTH="10" NOTNULL="true" SEQUENCE="false" DECIMALS="4" COMMENT="The calculated median value"/>
-        <FIELD NAME="lowerquartile" TYPE="number" LENGTH="10" NOTNULL="true" SEQUENCE="false" DECIMALS="4" COMMENT="The calculated lower quartile"/>
-        <FIELD NAME="upperquartile" TYPE="number" LENGTH="10" NOTNULL="true" SEQUENCE="false" DECIMALS="4" COMMENT="The calculated upper quartile"/>
-        <FIELD NAME="interquartile" TYPE="number" LENGTH="10" NOTNULL="true" SEQUENCE="false" DECIMALS="4" COMMENT="The calculated inter quartile range"/>
-        <FIELD NAME="lastrun" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The timestamp the value was last calculated"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-      <INDEXES>
-        <INDEX NAME="metricid" UNIQUE="false" FIELDS="metricid"/>
-      </INDEXES>
-    </TABLE>
-    <TABLE NAME="tool_nla_site_periodic" COMMENT="Stores periodic aggregated calculated statistics for the entire site">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="metricid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The id of the metric associated with this data."/>
-        <FIELD NAME="maximum" TYPE="number" LENGTH="10" NOTNULL="true" SEQUENCE="false" DECIMALS="4" COMMENT="The maximum value found"/>
-        <FIELD NAME="minimum" TYPE="number" LENGTH="10" NOTNULL="true" SEQUENCE="false" DECIMALS="4" COMMENT="The minimum calcutated"/>
-        <FIELD NAME="mean" TYPE="number" LENGTH="10" NOTNULL="true" SEQUENCE="false" DECIMALS="4" COMMENT="The calculated mean value"/>
-        <FIELD NAME="median" TYPE="number" LENGTH="10" NOTNULL="true" SEQUENCE="false" DECIMALS="4" COMMENT="The calculated median value"/>
-        <FIELD NAME="lowerquartile" TYPE="number" LENGTH="10" NOTNULL="true" SEQUENCE="false" DECIMALS="4" COMMENT="The calculated lower quartile"/>
-        <FIELD NAME="upperquartile" TYPE="number" LENGTH="10" NOTNULL="true" SEQUENCE="false" DECIMALS="4" COMMENT="The calculated upper quartile"/>
-        <FIELD NAME="interquartile" TYPE="number" LENGTH="10" NOTNULL="true" SEQUENCE="false" DECIMALS="4" COMMENT="The calculated inter quartile range"/>
+        <FIELD NAME="modified" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The timestamp the value was calculated"/>
         <FIELD NAME="periodstart" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The timestamp of the period start"/>
         <FIELD NAME="periodlength" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The length of the period in seconds"/>
       </FIELDS>
@@ -62,28 +23,8 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
       <INDEXES>
-        <INDEX NAME="metricid" UNIQUE="false" FIELDS="metricid"/>
-      </INDEXES>
-    </TABLE>
-    <TABLE NAME="tool_nla_user_periodic" COMMENT="Stores periodic aggregated calculated statistics for individual users">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="metricid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The id of the metric associated with this data."/>
-        <FIELD NAME="maximum" TYPE="number" LENGTH="10" NOTNULL="true" SEQUENCE="false" DECIMALS="4" COMMENT="The maximum value found"/>
-        <FIELD NAME="minimum" TYPE="number" LENGTH="10" NOTNULL="true" SEQUENCE="false" DECIMALS="4" COMMENT="The minimum calcutated"/>
-        <FIELD NAME="mean" TYPE="number" LENGTH="10" NOTNULL="true" SEQUENCE="false" DECIMALS="4" COMMENT="The calculated mean value"/>
-        <FIELD NAME="median" TYPE="number" LENGTH="10" NOTNULL="true" SEQUENCE="false" DECIMALS="4" COMMENT="The calculated median value"/>
-        <FIELD NAME="lowerquartile" TYPE="number" LENGTH="10" NOTNULL="true" SEQUENCE="false" DECIMALS="4" COMMENT="The calculated lower quartile"/>
-        <FIELD NAME="upperquartile" TYPE="number" LENGTH="10" NOTNULL="true" SEQUENCE="false" DECIMALS="4" COMMENT="The calculated upper quartile"/>
-        <FIELD NAME="interquartile" TYPE="number" LENGTH="10" NOTNULL="true" SEQUENCE="false" DECIMALS="4" COMMENT="The calculated inter quartile range"/>
-        <FIELD NAME="periodstart" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The timestamp of the period start"/>
-        <FIELD NAME="periodlength" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The length of the period in seconds"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-      <INDEXES>
-        <INDEX NAME="metricid" UNIQUE="false" FIELDS="metricid"/>
+        <INDEX NAME="courseid" UNIQUE="false" FIELDS="courseid"/>
+        <INDEX NAME="periodstart" UNIQUE="false" FIELDS="periodstart"/>
       </INDEXES>
     </TABLE>
     <TABLE NAME="tool_nla_metrics" COMMENT="The metrics we are tracking">
@@ -95,6 +36,7 @@
         <FIELD NAME="gethistory" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="1" SEQUENCE="false" COMMENT="does this metric support historical data processing"/>
         <FIELD NAME="historyrun" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="timestamp history was last run"/>
         <FIELD NAME="enabled" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="1" SEQUENCE="false" COMMENT="Is this metric enabled"/>
+        <FIELD NAME="lastrun" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="The timestamp of the last processing run"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
