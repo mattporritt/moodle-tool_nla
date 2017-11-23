@@ -120,8 +120,8 @@ class analyze {
 
         if (!$userscache|| $ignorecache || $userscache['expiry'] < $now) {
 
-            $coursecontext = context_course::instance($courseid);
-            $users = get_enrolled_users($coursecontext, '', 0, 'u.lastlogin', null, 0, 0, true);
+            $coursecontext = \context_course::instance($courseid);
+            $users = get_enrolled_users($coursecontext, '', 0, 'u.lastlogin, u.id', null, 0, 0, true);
 
             $userobj = array(
                     'expiry' => $expiry,

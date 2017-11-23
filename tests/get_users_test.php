@@ -48,10 +48,11 @@ class tool_nla_get_users_testcase extends advanced_testcase {
         $generator->enrol_user($student1->id, $course1->id, $roleids['student']);
 
         $analyzer = new analyze();
-        $users = $analyzer->get_users();
+        $users = $analyzer->get_users($course1->id);
 
         // Expecting one user.
         $this->assertEquals(1, count($users));
+        $this->assertEquals($student1->id, $users[0]->id);
     }
 
     /**
@@ -68,7 +69,7 @@ class tool_nla_get_users_testcase extends advanced_testcase {
         $student1 = $generator->create_user();
 
         $analyzer = new analyze();
-        $users = $analyzer->get_users();
+        $users = $analyzer->get_users($course1->id);
 
         // Expecting one user.
         $this->assertEquals(0, count($users));
@@ -92,10 +93,13 @@ class tool_nla_get_users_testcase extends advanced_testcase {
         $generator->enrol_user($student2->id, $course2->id, $roleids['student']);
 
         $analyzer = new analyze();
-        $users = $analyzer->get_users();
+        $users1 = $analyzer->get_users($course1->id);
+        $users2 = $analyzer->get_users($course2->id);
 
-        $this->assertEquals(1, count($users));
-        $this->assertEquals($student1->id, $users[$student1->id]->id);
+        $this->assertEquals(1, count($users1));
+        $this->assertEquals($student1->id, $users1[0]->id);
+        $this->assertEquals(1, count($users2));
+        $this->assertEquals($student2->id, $users2[0]->id);
     }
 
     /**
@@ -115,9 +119,10 @@ class tool_nla_get_users_testcase extends advanced_testcase {
         move_courses(array($course1->id), $categoryhidden->id);
 
         $analyzer = new analyze();
-        $users = $analyzer->get_users();
+        $users = $analyzer->get_users($course1->id);
 
-        $this->assertEquals(0, count($users));
+        $this->assertEquals(1, count($users));
+        $this->assertEquals($student->id, $users[0]->id);
     }
 
     /**
@@ -138,10 +143,13 @@ class tool_nla_get_users_testcase extends advanced_testcase {
         $generator->enrol_user($student2->id, $course2->id, $roleids['student']);
 
         $analyzer = new analyze();
-        $users = $analyzer->get_users();
+        $users1 = $analyzer->get_users($course1->id);
+        $users2 = $analyzer->get_users($course2->id);
 
-        $this->assertEquals(1, count($users));
-        $this->assertEquals($student1->id, $users[$student1->id]->id);
+        $this->assertEquals(1, count($users1));
+        $this->assertEquals($student1->id, $users1[0]->id);
+        $this->assertEquals(1, count($users2));
+        $this->assertEquals($student2->id, $users2[0]->id);
     }
 
     /**
@@ -163,10 +171,13 @@ class tool_nla_get_users_testcase extends advanced_testcase {
         delete_user($student2);
 
         $analyzer = new analyze();
-        $users = $analyzer->get_users();
+        $users1 = $analyzer->get_users($course1->id);
+        $users2 = $analyzer->get_users($course2->id);
 
-        $this->assertEquals(1, count($users));
-        $this->assertEquals($student1->id, $users[$student1->id]->id);
+        $this->assertEquals(1, count($users1));
+        $this->assertEquals($student1->id, $users1[0]->id);
+        $this->assertEquals(0, count($users2));
+
     }
 
     /**
@@ -187,10 +198,12 @@ class tool_nla_get_users_testcase extends advanced_testcase {
         $generator->enrol_user($student2->id, $course2->id, $roleids['student'], 'manual', 0, 0, 1);
 
         $analyzer = new analyze();
-        $users = $analyzer->get_users();
+        $users1 = $analyzer->get_users($course1->id);
+        $users2 = $analyzer->get_users($course2->id);
 
-        $this->assertEquals(1, count($users));
-        $this->assertEquals($student1->id, $users[$student1->id]->id);
+        $this->assertEquals(1, count($users1));
+        $this->assertEquals($student1->id, $users1[0]->id);
+        $this->assertEquals(0, count($users2));
     }
 
     /**
@@ -212,10 +225,13 @@ class tool_nla_get_users_testcase extends advanced_testcase {
         $generator->enrol_user($student2->id, $course2->id, $roleids['student']);
 
         $analyzer = new analyze();
-        $users = $analyzer->get_users();
+        $users1 = $analyzer->get_users($course1->id);
+        $users2 = $analyzer->get_users($course2->id);
 
-        $this->assertEquals(1, count($users));
-        $this->assertEquals($student2->id, $users[$student2->id]->id);
+        $this->assertEquals(1, count($users1));
+        $this->assertEquals($student1->id, $users1[0]->id);
+        $this->assertEquals(1, count($users2));
+        $this->assertEquals($student2->id, $users2[0]->id);
     }
 
 }
