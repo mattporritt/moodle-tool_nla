@@ -30,9 +30,9 @@ use tool_nla\analyze\analyze;
 class tool_nla_metrics_testcase extends advanced_testcase {
 
     /**
-     * Test get_users method with no enrollments.
+     * Test get_metrics methods.
      */
-    public function test_last_login_interval() {
+    public function test_get_metrics() {
         $analyzer = new analyze();
         $metrics = $analyzer->get_metrics();
 

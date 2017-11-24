@@ -296,14 +296,18 @@ class analyze {
 
     /**
      *
-     * @param unknown $metric
+     * @param unknown $metricname
      * @param number $interval
      */
-    public function process_metric($metric, $interval=0) {
+    public function process_metric($metricname, $courseid, $interval=0) {
         if ($interval == 0) {
             $interval = $this->interval;
         }
-        $courses = $this->get_courses();
+        $users = $this->get_users($courseid);
+        $classname = "tool_nla\\metrics\\" . $metricname;
+        $metric = new $classname($users);
+
+        $stats = $this->get_stats($metric);
 
         // If it is time to process metric.
             // Get metric iterator based on metric shortname.
@@ -323,8 +327,11 @@ class analyze {
      */
     public function process_metrics() {
 
-        foreach ($metrics as $metric) {
-            $this->process_metric($metric);
+        foreach ($metrics as $metricname) {
+            $courses = $this->get_courses();
+            foreach ($courses as $course) {
+                $this->process_metric($metricname, $course->id);
+            }
         }
 
     }
