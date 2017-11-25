@@ -15,7 +15,8 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Forum sentiment analyzer class.
+ * Last login interval metric class.
+ * Creates an iterator of user last login intervals.
  *
  * @package     tool_nla
  * @copyright   2017 Matt Porritt <mattp@catalyst-au.net>

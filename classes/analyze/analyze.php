@@ -108,7 +108,7 @@ class analyze {
      * Get users that have at least one active course enrolment.
      *
      * @param bool $ignorecache If true don't use caches.
-     * @return object $users List of users.
+     * @return array $users List of users.
      */
     public function get_users($courseid, $ignorecache=false) {
         global $DB, $SITE;
@@ -125,7 +125,7 @@ class analyze {
 
             $userobj = array(
                     'expiry' => $expiry,
-                    'courses' => $users
+                    'users' => $users
             );
             $cache->set($courseid, $userobj);
         } else {
@@ -322,10 +322,14 @@ class analyze {
             $interval = $this->interval;
         }
         $users = $this->get_users($courseid);
-        $classname = "tool_nla\\metrics\\" . $metricname;
-        $metric = new $classname($users);
 
-        $stats = $this->get_stats($metric);
+        if (!empty($users)) {
+            $classname = "tool_nla\\metrics\\" . $metricname;
+            $metric = new $classname($users);
+            $stats = $this->get_stats($metric);
+        } else { // No users found, so return false.
+            $stats = false;
+        }
 
         return $stats;
 

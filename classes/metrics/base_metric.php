@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Forum sentiment analyzer class.
+ * Base class for all metrics.
  *
  * @package     tool_nla
  * @copyright   2017 Matt Porritt <mattp@catalyst-au.net>
@@ -27,7 +27,7 @@ namespace tool_nla\metrics;
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Base class for all metrics
+ * Base class for all metrics.
  *
  * @package     tool_nla
  * @copyright   2017 Matt Porritt <mattp@catalyst-au.net>

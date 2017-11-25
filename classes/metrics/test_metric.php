@@ -15,17 +15,39 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin version and other meta-data are defined here.
+ * Test metric for unit tests.
  *
  * @package     tool_nla
  * @copyright   2017 Matt Porritt <mattp@catalyst-au.net>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace tool_nla\metrics;
+
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'tool_nla';
-$plugin->release = '2017112501';
-$plugin->version = 2017112501;
-$plugin->requires = 2017051500;
-$plugin->maturity = MATURITY_ALPHA;
+/**
+ * Test metric for unit tests.
+ *
+ * @package     tool_nla
+ * @copyright   2017 Matt Porritt <mattp@catalyst-au.net>
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class last_login_interval extends base_metric{
+
+    /**
+     * Given an array of user records return list of numbers.
+     *
+     * @param array $users Array of user records.
+     * @return array Static list of numbers.
+     */
+    protected function get_array_from_users($users) {
+        return array(
+                1 => 1,
+                2 => 2,
+                3 => 3,
+                4 => 4,
+                5 => 5
+        );
+    }
+}
