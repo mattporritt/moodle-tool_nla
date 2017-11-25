@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 use tool_nla\analyze\analyze;
 
-class tool_nla_metrics_testcase extends advanced_testcase {
+class tool_nla_analyze_testcase extends advanced_testcase {
 
     /**
      * Test get_metrics methods.
@@ -38,6 +38,12 @@ class tool_nla_metrics_testcase extends advanced_testcase {
 
         $this->assertEquals(1, count($metrics));
         $this->assertEquals('last_login_interval', $metrics[1]->shortname);
+
+    }
+
+    public function test_process_metric() {
+        $analyzer = new analyze();
+        $stats = $analyzer->process_metric('last_login_interval', '1');
 
     }
 }

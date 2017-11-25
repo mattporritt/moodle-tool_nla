@@ -78,7 +78,7 @@ class analyze {
      * @return object $courses List of courses.
      */
     public function get_courses($ignorecache=false) {
- 
+
         $now = time();
         $expiry = $now + 3600;
         $cache = \cache::make('tool_nla', 'courses');
@@ -121,7 +121,7 @@ class analyze {
         if (!$userscache|| $ignorecache || $userscache['expiry'] < $now) {
 
             $coursecontext = \context_course::instance($courseid);
-            $users = get_enrolled_users($coursecontext, '', 0, 'u.lastlogin, u.id', null, 0, 0, true);
+            $users = get_enrolled_users($coursecontext, '', 0, 'u.id, u.lastlogin', null, 0, 0, true);
 
             $userobj = array(
                     'expiry' => $expiry,
@@ -136,7 +136,7 @@ class analyze {
     }
 
     /**
-     * 
+     *
      * @param unknown $count
      * @param unknown $multiplier
      * @return number[]
@@ -154,6 +154,16 @@ class analyze {
         return array($value1, $value2);
     }
 
+    /**
+     *
+     * @param unknown $frequency
+     * @param unknown $total
+     * @param unknown $count
+     * @param unknown $medianarray
+     * @param unknown $lowerqarray
+     * @param unknown $upperarray
+     * @return number[]|mixed[]|unknown[]
+     */
     private function calculate_stats(&$frequency, $total, $count, $medianarray, $lowerqarray, $upperarray) {
         $minimum = 0;
         $maximum = 0;
@@ -172,8 +182,11 @@ class analyze {
         reset($frequency);
 
         // Calculate mean value.
-        $mean = round(($total / $count), 3);
-
+        if ($count != 0 ) {
+            $mean = round(($total / $count), 3);
+        } else {
+            $mean = 0;
+        }
         // Get median index values.
         list($medianindex1, $medianindex2) = $medianarray;
 
@@ -193,7 +206,7 @@ class analyze {
         foreach ($frequency as $key => $value) {
             $ncount += $value;
 
-            // Set lowerq1
+            // Set lowerq1.
             if (($ncount >= $lowerqindex1) && $lowerq1 == 0) {
                 $lowerq1 = $key;
             }
@@ -213,7 +226,7 @@ class analyze {
                 $median2 = $key;
             }
 
-            // Set upperq1
+            // Set upperq1.
             if (($ncount >= $upperqindex1) && $upperq1 == 0) {
                 $upperq1 = $key;
             }
@@ -283,13 +296,18 @@ class analyze {
             $count++;
             $total += $value;
         }
-        ksort($frequency);  // Sort array by keys.
 
-        $medianarray = $this->calculate_index($count, 0.5);
-        $lowerqarray = $this->calculate_index($count, 0.25);
-        $upperarray  = $this->calculate_index($count, 0.75);
+        if ($frequency) {
+            ksort($frequency);  // Sort array by keys.
 
-        $results = $this->calculate_stats($frequency, $total, $count, $medianarray, $lowerqarray, $upperarray);
+            $medianarray = $this->calculate_index($count, 0.5);
+            $lowerqarray = $this->calculate_index($count, 0.25);
+            $upperarray  = $this->calculate_index($count, 0.75);
+
+            $results = $this->calculate_stats($frequency, $total, $count, $medianarray, $lowerqarray, $upperarray);
+        } else {
+            $results = array(0, 0, 0, 0, 0, 0, 0);
+        }
 
         return $results;
     }
@@ -309,17 +327,16 @@ class analyze {
 
         $stats = $this->get_stats($metric);
 
+        return $stats;
+
         // If it is time to process metric.
             // Get metric iterator based on metric shortname.
             // Get stats for metric.
             // Save stats to database.
 
-
         // If we are calculating history for metric.
             // Find out where we are up to in history processing.
             // Create an adhoc task to process next lot of history (if required).
-            // ?
-            // Profit?
     }
 
     /**
@@ -330,7 +347,7 @@ class analyze {
         foreach ($metrics as $metricname) {
             $courses = $this->get_courses();
             foreach ($courses as $course) {
-                $this->process_metric($metricname, $course->id);
+                $stats = $this->process_metric($metricname, $course->id);
             }
         }
 
