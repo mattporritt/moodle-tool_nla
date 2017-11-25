@@ -29,4 +29,8 @@ $string['pluginname'] = 'Native Learning Analytics';
 $string['pluginnamedesc'] = 'Native Learning Analytics configuration settings.';
 
 $string['cachedef_course'] = 'Stores retrieved courses use by native learning analytics.';
+$string['hiddencategories'] = 'Exclude hidden categories';
+$string['hiddencategories_desc'] = 'Exclude hidden courses';
+$string['hiddencourses'] = 'Exclude hidden courses';
+$string['hiddencourses_desc'] = 'Collect and process analytic data';
 $string['processtask'] = 'Collect and process analytic data';

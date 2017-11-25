@@ -25,7 +25,29 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-if ($ADMIN->fulltree) {
-    // TODO: Define the plugin settings page.
-    // https://docs.moodle.org/dev/Admin_settings
+global $PAGE;
+
+if ($hassiteconfig) {
+    $settings = new admin_settingpage('tool_nla', get_string('pluginname', 'tool_nla'));
+    $ADMIN->add('tools', $settings);
+
+    $settings->add(new admin_setting_heading(
+            'tool_nla_settings',
+            '',
+            get_string('pluginnamedesc', 'tool_nla')
+            ));
+
+    if (! during_initial_install ()) {
+        // General Settings.
+        $settings->add(new admin_setting_configcheckbox('tool_nla/hiddencourses', 
+                get_string('hiddencourses', 'tool_nla'),
+                get_string('hiddencourses_desc', 'tool_nla'),
+                1));
+
+        $settings->add(new admin_setting_configcheckbox('tool_nla/hiddencategories',
+                get_string('hiddencategories', 'tool_nla'),
+                get_string('hiddencategories_desc', 'tool_nla'),
+                1));
+
+    }
 }

@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'tool_nla';
-$plugin->release = '2017112501';
-$plugin->version = 2017112501;
+$plugin->release = '2017112502';
+$plugin->version = 2017112502;
 $plugin->requires = 2017051500;
 $plugin->maturity = MATURITY_ALPHA;

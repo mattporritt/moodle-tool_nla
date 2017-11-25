@@ -52,7 +52,7 @@ class tool_nla_get_users_testcase extends advanced_testcase {
 
         // Expecting one user.
         $this->assertEquals(1, count($users));
-        $this->assertEquals($student1->id, $users[0]->id);
+        $this->assertEquals($student1->id, $users[$student1->id]->id);
     }
 
     /**
@@ -97,9 +97,9 @@ class tool_nla_get_users_testcase extends advanced_testcase {
         $users2 = $analyzer->get_users($course2->id);
 
         $this->assertEquals(1, count($users1));
-        $this->assertEquals($student1->id, $users1[0]->id);
+        $this->assertEquals($student1->id, $users1[$student1->id]->id);
         $this->assertEquals(1, count($users2));
-        $this->assertEquals($student2->id, $users2[0]->id);
+        $this->assertEquals($student2->id, $users2[$student2->id]->id);
     }
 
     /**
