@@ -30,7 +30,7 @@ $string['pluginnamedesc'] = 'Native Learning Analytics configuration settings.';
 
 $string['cachedef_course'] = 'Stores retrieved courses use by native learning analytics.';
 $string['hiddencategories'] = 'Exclude hidden categories';
-$string['hiddencategories_desc'] = 'Exclude hidden courses';
+$string['hiddencategories_desc'] = 'When enabled courses in hidden categories will be excluded from analytics';
 $string['hiddencourses'] = 'Exclude hidden courses';
-$string['hiddencourses_desc'] = 'Collect and process analytic data';
+$string['hiddencourses_desc'] = 'When enabled hidden courses will be excluded from analytics';
 $string['processtask'] = 'Collect and process analytic data';

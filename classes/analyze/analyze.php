@@ -86,7 +86,7 @@ class analyze {
         $coursescache = $cache->get('courses');
 
         if (!$coursescache|| $ignorecache || $coursescache['expiry'] < $now) {
-            $courses = get_courses('all', 'c.id ASC', 'c.id');
+            $courses = get_courses('all', 'c.id ASC', 'c.id, c.visible');
 
             $courseobj = array(
                     'expiry' => $expiry,
