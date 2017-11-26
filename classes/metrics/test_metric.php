@@ -33,7 +33,7 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright   2017 Matt Porritt <mattp@catalyst-au.net>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class last_login_interval extends base_metric{
+class test_metric extends base_metric{
 
     /**
      * Given an array of user records return list of numbers.
@@ -43,6 +43,7 @@ class last_login_interval extends base_metric{
      */
     protected function get_array_from_users($users) {
         return array(
+                0 => 0,
                 1 => 1,
                 2 => 2,
                 3 => 3,

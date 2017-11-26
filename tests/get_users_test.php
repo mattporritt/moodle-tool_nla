@@ -122,7 +122,7 @@ class tool_nla_get_users_testcase extends advanced_testcase {
         $users = $analyzer->get_users($course1->id);
 
         $this->assertEquals(1, count($users));
-        $this->assertEquals($student->id, $users[0]->id);
+        $this->assertEquals($student->id, $users[$student->id]->id);
     }
 
     /**
@@ -147,9 +147,9 @@ class tool_nla_get_users_testcase extends advanced_testcase {
         $users2 = $analyzer->get_users($course2->id);
 
         $this->assertEquals(1, count($users1));
-        $this->assertEquals($student1->id, $users1[0]->id);
+        $this->assertEquals($student1->id, $users1[$student1->id]->id);
         $this->assertEquals(1, count($users2));
-        $this->assertEquals($student2->id, $users2[0]->id);
+        $this->assertEquals($student2->id, $users2[$student2->id]->id);
     }
 
     /**
@@ -175,7 +175,7 @@ class tool_nla_get_users_testcase extends advanced_testcase {
         $users2 = $analyzer->get_users($course2->id);
 
         $this->assertEquals(1, count($users1));
-        $this->assertEquals($student1->id, $users1[0]->id);
+        $this->assertEquals($student1->id, $users1[$student1->id]->id);
         $this->assertEquals(0, count($users2));
 
     }
@@ -202,7 +202,7 @@ class tool_nla_get_users_testcase extends advanced_testcase {
         $users2 = $analyzer->get_users($course2->id);
 
         $this->assertEquals(1, count($users1));
-        $this->assertEquals($student1->id, $users1[0]->id);
+        $this->assertEquals($student1->id, $users1[$student1->id]->id);
         $this->assertEquals(0, count($users2));
     }
 
@@ -229,9 +229,9 @@ class tool_nla_get_users_testcase extends advanced_testcase {
         $users2 = $analyzer->get_users($course2->id);
 
         $this->assertEquals(1, count($users1));
-        $this->assertEquals($student1->id, $users1[0]->id);
+        $this->assertEquals($student1->id, $users1[$student1->id]->id);
         $this->assertEquals(1, count($users2));
-        $this->assertEquals($student2->id, $users2[0]->id);
+        $this->assertEquals($student2->id, $users2[$student2->id]->id);
     }
 
 }

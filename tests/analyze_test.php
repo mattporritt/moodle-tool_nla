@@ -34,16 +34,48 @@ class tool_nla_analyze_testcase extends advanced_testcase {
      */
     public function test_get_metrics() {
         $analyzer = new analyze();
-        $metrics = $analyzer->get_metrics();
+        $stats = $analyzer->get_metrics();
 
-        $this->assertEquals(1, count($metrics));
-        $this->assertEquals('last_login_interval', $metrics[1]->shortname);
+        $this->assertEquals(1, count($stats));
+        $this->assertEquals('last_login_interval', $stats[1]->shortname);
 
     }
 
-    public function test_process_metric() {
+    /**
+     * Test process metric for course with no enrolled users.
+     */
+    public function test_process_metric_no_users() {
+        $this->resetAfterTest(true);
+        $generator = $this->getDataGenerator();
+
+        // Create course with no enrolled users.
+        $course = $generator->create_course();
+ 
         $analyzer = new analyze();
-        $stats = $analyzer->process_metric('last_login_interval', '1');
+        $stats = $analyzer->process_metric('test_metric', $course->id);
+
+        $this->assertEquals(false, $stats);
+
+    }
+
+    /**
+     * Test process metric for course with enrolled users.
+     */
+    public function test_process_metric_users() {
+        global $DB;
+        $this->resetAfterTest(true);
+        $generator = $this->getDataGenerator();
+
+        // Create course with no enrolled users.
+        $roleids = $DB->get_records_menu('role', null, '', 'shortname, id');
+        $student = $generator->create_user();
+        $course = $generator->create_course();
+        $generator->enrol_user($student->id, $course->id, $roleids['student']);
+
+        $analyzer = new analyze();
+        $stats = $analyzer->process_metric('test_metric', $course->id);
+
+        $this->assertEquals(7, count($stats));
 
     }
 }

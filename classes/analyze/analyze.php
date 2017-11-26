@@ -328,6 +328,7 @@ class analyze {
 
         $frequency = array();
         foreach ($metric as $value) {
+
             if (array_key_exists($value, $frequency)) {
                 $frequency[$value] = $frequency[$value] + 1;
             } else {
