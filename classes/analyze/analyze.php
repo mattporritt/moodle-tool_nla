@@ -81,6 +81,10 @@ class analyze {
         return $metrics;
     }
 
+    private function time_to_process($metricname, $courseid) {
+
+    }
+
     /**
      * Get available courses to analyze.
      * Results are cached to improve performance.
@@ -362,6 +366,13 @@ class analyze {
         if ($interval == 0) {
             $interval = $this->interval;
         }
+
+        // If it is not time to process this metric for this course return early.
+        $processtime = $this->time_to_process($metricname, $courseid);
+        if (!$processtime) {
+            return false;
+        }
+
         $users = $this->get_users($courseid);
 
         if (!empty($users)) {
