@@ -29,8 +29,8 @@ $string['pluginname'] = 'Native Learning Analytics';
 $string['pluginnamedesc'] = 'Native Learning Analytics configuration settings.';
 
 $string['cachedef_course'] = 'Stores retrieved courses use by native learning analytics.';
-$string['hiddencategories'] = 'Exclude hidden categories';
-$string['hiddencategories_desc'] = 'When enabled courses in hidden categories will be excluded from analytics';
 $string['hiddencourses'] = 'Exclude hidden courses';
-$string['hiddencourses_desc'] = 'When enabled hidden courses will be excluded from analytics';
+$string['hiddencourses_desc'] = 'When enabled hidden courses will be excluded from analytics, this includes courses in hidden categories.';
 $string['processtask'] = 'Collect and process analytic data';
+$string['startend'] = 'Respect course start and end dates';
+$string['startend_desc'] = 'When enabled courses will be excluded from analytics calculations if their start date has in the future or their end date is in the past.';

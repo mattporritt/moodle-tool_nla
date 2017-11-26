@@ -44,10 +44,9 @@ if ($hassiteconfig) {
                 get_string('hiddencourses_desc', 'tool_nla'),
                 1));
 
-        $settings->add(new admin_setting_configcheckbox('tool_nla/hiddencategories',
-                get_string('hiddencategories', 'tool_nla'),
-                get_string('hiddencategories_desc', 'tool_nla'),
+        $settings->add(new admin_setting_configcheckbox('tool_nla/startend',
+                get_string('startend', 'tool_nla'),
+                get_string('startend_desc', 'tool_nla'),
                 1));
-
     }
 }

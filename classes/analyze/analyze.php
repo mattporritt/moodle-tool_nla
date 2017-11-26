@@ -48,6 +48,26 @@ class analyze {
         $this->metrics = $this->get_metrics();
     }
 
+    private function show_hidden_courses() {
+        if ($this->config->hiddencourses == 1) {
+            $visible = false;
+        } else {
+            $visible = true;
+        }
+
+        return $visible;
+    }
+
+    private function respect_dates() {
+        if ($this->config->startend == 1) {
+            $dates = true;
+        } else {
+            $dates = false;
+        }
+
+        return $dates;
+    }
+
     /**
      * Get the enabled metrics and their settings from the database.
      *
@@ -78,6 +98,7 @@ class analyze {
      * @return object $courses List of courses.
      */
     public function get_courses($ignorecache=false) {
+        global $DB;
 
         $now = time();
         $expiry = $now + 3600;
@@ -86,7 +107,26 @@ class analyze {
         $coursescache = $cache->get('courses');
 
         if (!$coursescache|| $ignorecache || $coursescache['expiry'] < $now) {
-            $courses = get_courses('all', 'c.id ASC', 'c.id, c.visible');
+            $select = '';
+            $params = array();
+
+            if (!$this->show_hidden_courses()) { // Are we showing hidden courses?
+                $select = 'visible = :visible';
+                $params['visible'] = 1;
+            }
+
+            if ($this->respect_dates()) { // Are courses by start and end date?
+                if ($select) {
+                    $select .= 'AND startdate <= :startdate AND enddate >= :enddate';
+                } else {
+                    $select = 'startdate <= :startdate AND enddate >= :enddate';
+                }
+
+                $params['startdate'] = $now;
+                $params['enddate'] = $now;
+            }
+
+            $courses = $DB->get_records_select('course', $select, $params, 'id ASC', 'id');
 
             $courseobj = array(
                     'expiry' => $expiry,
