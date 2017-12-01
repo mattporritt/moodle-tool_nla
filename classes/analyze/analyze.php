@@ -81,8 +81,37 @@ class analyze {
         return $metrics;
     }
 
-    private function time_to_process($metricname, $courseid) {
+    /**
+     *
+     * @param unknown $metricname
+     * @param unknown $courseid
+     * @param number $interval
+     * @param number $now
+     * @return boolean
+     */
+    private function time_to_process($metricname, $courseid, $interval=0, $now=0) {
+        global $DB;
+        $process = false;
 
+        if ($interval == 0) {
+            $interval = $this->interval;
+        }
+
+        if ($now == 0) {
+            $now = time();
+        }
+
+        // Get last run time for metric from DB
+        $conditions = array('metricshortname' => $metricname, 'courseid' => $courseid);
+        $lastrun = $DB->get_field('metrics_course', 'lastrun', $conditions);
+        $nextrun = $lastrun + $interval;
+
+        // If now is greater or equal to last run + inteval return true.
+        if ($now >= $nextrun) {
+            $process = false;
+        }
+
+        return $process;
     }
 
     /**
@@ -362,11 +391,7 @@ class analyze {
      * @param unknown $metricname
      * @param number $interval
      */
-    public function process_metric($metricname, $courseid, $interval=0) {
-        if ($interval == 0) {
-            $interval = $this->interval;
-        }
-
+    public function process_metric($metricname, $courseid) {
         // If it is not time to process this metric for this course return early.
         $processtime = $this->time_to_process($metricname, $courseid);
         if (!$processtime) {

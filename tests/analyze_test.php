@@ -50,7 +50,7 @@ class tool_nla_analyze_testcase extends advanced_testcase {
 
         // Create course with no enrolled users.
         $course = $generator->create_course();
- 
+
         $analyzer = new analyze();
         $stats = $analyzer->process_metric('test_metric', $course->id);
 
@@ -71,6 +71,21 @@ class tool_nla_analyze_testcase extends advanced_testcase {
         $student = $generator->create_user();
         $course = $generator->create_course();
         $generator->enrol_user($student->id, $course->id, $roleids['student']);
+
+        $analyzer = new analyze();
+        $stats = $analyzer->process_metric('test_metric', $course->id);
+
+        $this->assertEquals(7, count($stats));
+
+    }
+
+    /**
+     * Test process metric for course with enrolled users.
+     */
+    public function test_time_to_processs() {
+        global $DB;
+        $this->resetAfterTest(true);
+        $generator = $this->getDataGenerator();
 
         $analyzer = new analyze();
         $stats = $analyzer->process_metric('test_metric', $course->id);
