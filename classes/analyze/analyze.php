@@ -89,7 +89,7 @@ class analyze {
      * @param number $now
      * @return boolean
      */
-    private function time_to_process($metricname, $courseid, $interval=0, $now=0) {
+    public function time_to_process($metricname, $courseid, $interval=0, $now=0) {
         global $DB;
         $process = false;
 
@@ -103,12 +103,12 @@ class analyze {
 
         // Get last run time for metric from DB
         $conditions = array('metricshortname' => $metricname, 'courseid' => $courseid);
-        $lastrun = $DB->get_field('metrics_course', 'lastrun', $conditions);
+        $lastrun = $DB->get_field('tool_nla_metrics_course', 'lastrun', $conditions);
         $nextrun = $lastrun + $interval;
 
         // If now is greater or equal to last run + inteval return true.
         if ($now >= $nextrun) {
-            $process = false;
+            $process = true;
         }
 
         return $process;

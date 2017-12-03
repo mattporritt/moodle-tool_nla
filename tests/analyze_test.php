@@ -78,19 +78,67 @@ class tool_nla_analyze_testcase extends advanced_testcase {
         $this->assertEquals(7, count($stats));
 
     }
-
     /**
-     * Test process metric for course with enrolled users.
+     * Test time to process method when there are no records in DB.
+     * This occurs on initial condition when metric has never ran before.
      */
-    public function test_time_to_processs() {
+    public function test_time_to_process_no_record() {
         global $DB;
         $this->resetAfterTest(true);
         $generator = $this->getDataGenerator();
 
-        $analyzer = new analyze();
-        $stats = $analyzer->process_metric('test_metric', $course->id);
+        $course = $generator->create_course();
 
-        $this->assertEquals(7, count($stats));
+        $analyzer = new analyze();
+        $process = $analyzer->time_to_process('test_metric', $course->id);
+
+        $this->assertEquals(true, $process);
+
+    }
+
+    /**
+     * Test time to process method when it is time to process.
+     */
+    public function test_time_to_process_time() {
+        global $DB;
+        $this->resetAfterTest(true);
+        $generator = $this->getDataGenerator();
+
+        $course = $generator->create_course();
+        $record = new \stdClass();
+        $record->metricshortname = 'test_metric';
+        $record->courseid = $course->id;
+        $record->lastrun = 0;
+
+        $DB->insert_record('tool_nla_metrics_course', $record);
+
+        $analyzer = new analyze();
+        $process = $analyzer->time_to_process('test_metric', $course->id);
+
+        $this->assertEquals(true, $process);
+
+    }
+
+    /**
+     * Test time to process method when it is not time to process.
+     */
+    public function test_time_to_process_not_time() {
+        global $DB;
+        $this->resetAfterTest(true);
+        $generator = $this->getDataGenerator();
+
+        $course = $generator->create_course();
+        $record = new \stdClass();
+        $record->metricshortname = 'test_metric';
+        $record->courseid = $course->id;
+        $record->lastrun = 10000;
+
+        $DB->insert_record('tool_nla_metrics_course', $record);
+
+        $analyzer = new analyze();
+        $process = $analyzer->time_to_process('test_metric', $course->id, 1000, 1000);
+
+        $this->assertEquals(false, $process);
 
     }
 }
