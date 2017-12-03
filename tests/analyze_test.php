@@ -141,4 +141,34 @@ class tool_nla_analyze_testcase extends advanced_testcase {
         $this->assertEquals(false, $process);
 
     }
+
+    /**
+     * Test method to save stats to database.
+     */
+    public function test_save_stats() {
+        global $DB;
+        $this->resetAfterTest(true);
+
+        $courseid = 1;
+        $stats = array(2, 3, 4, 5, 6, 7, 8);
+        $periodstart = 100;
+        $periodlength = 604800;
+
+        $analyzer = new analyze();
+        $id = $analyzer->save_stats($courseid, $stats, $periodstart, $periodlength);
+
+        $record = $DB->get_record('tool_nla_site', array('id' => $id));
+
+        $this->assertEquals($courseid, $record->courseid);
+        $this->assertEquals(2, $record->minimum);
+        $this->assertEquals(3, $record->maximum);
+        $this->assertEquals(4, $record->mean);
+        $this->assertEquals(5, $record->median);
+        $this->assertEquals(6, $record->lowerquartile);
+        $this->assertEquals(7, $record->upperquartile);
+        $this->assertEquals(8, $record->interquartile);
+        $this->assertEquals($periodstart, $record->periodstart);
+        $this->assertEquals($periodlength, $record->periodlength);
+
+    }
 }

@@ -386,6 +386,29 @@ class analyze {
         return $results;
     }
 
+    public function save_stats($courseid, $stats, $periodstart, $periodlength) {
+        global $DB;
+        list($minimum, $maximum, $mean, $median, $lowerq, $upperq, $interquartilerange) = $stats;
+
+        $record = new \stdClass();
+        $record->courseid = $courseid;
+        $record->minimum = $minimum;
+        $record->maximum = $maximum;
+        $record->mean = $mean;
+        $record->median = $median;
+        $record->lowerquartile = $lowerq;
+        $record->upperquartile = $upperq;
+        $record->interquartile = $interquartilerange;
+        $record->modified = time();
+        $record->periodstart = $periodstart;
+        $record->periodlength = $periodlength;
+
+        $id = $DB->insert_record('tool_nla_site', $record);
+
+        return $id;
+
+    }
+
     /**
      *
      * @param unknown $metricname
@@ -413,7 +436,7 @@ class analyze {
         // If it is time to process metric.
             // Get metric iterator based on metric shortname.
             // Get stats for metric.
-            // Save stats to database.
+
 
         // If we are calculating history for metric.
             // Find out where we are up to in history processing.
@@ -429,6 +452,8 @@ class analyze {
             $courses = $this->get_courses();
             foreach ($courses as $course) {
                 $stats = $this->process_metric($metricname, $course->id);
+                // Save stats to database.
+
             }
         }
 
